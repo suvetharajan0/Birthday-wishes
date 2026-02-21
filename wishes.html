@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Birthday Queen Portal</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fff0f6, #ffe0ec);
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+h1 {
+  color: #ff4d6d;
+}
+
+button {
+  background: #ff4d6d;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #ff85a1;
+}
+
+.section {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.quiz-box {
+  background: rgb(158, 124, 199);
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.profile-pic {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 20px;
+  border: 5px solid #ff4d6d;
+  box-shadow: 0 0 20px rgba(255,77,109,0.4);
+}
+
+/* Align radio buttons nicely */
+.quiz-box label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.quiz-box input[type="radio"] {
+  width: 18px;
+  height: 18px;
+}
+
+/* Floating Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  color: #ff4d6d;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO PAGE -->
+<div id="intro" class="section active">
+  <h1>🎂 Happy BirthDay Suge 🎂</h1>
+  <img src="/suge.jpg" class="profile-pic" alt="Bestie Photo">
+  <h3>You chaotic, Delusional queen 👑</h3>
+  <p>
+    May your reels stay unholy, your fictional men notice you, 
+    and your dreams keep reaching the stars. 💖
+  </p>
+  <button onclick="startQuiz()"> Let's Go 😉</button>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="quiz" class="section">
+<h1> Official Delulu Inspection </h1>
+<form id="quizForm">
+
+<div class="quiz-box">
+<h3>1. What makes you so happy?</h3>
+<label><input type="radio" name="q1" value="a"> Kim Namjoon</label><br>
+<label><input type="radio" name="q1" value="b"> Watching unholy reels at 2AM</label><br>
+<label><input type="radio" name="q1" value="c"> Stalking</label>
+</div>
+
+<div class="quiz-box">
+<h3>2. When will you marry?</h3>
+<label><input type="radio" name="q2" value="a"> Never</label><br>
+<label><input type="radio" name="q2" value="b"> Never</label><br>
+<label><input type="radio" name="q2" value="c"> Never</label>
+</div>
+
+<div class="quiz-box">
+<h3>3. Who do you like?</h3>
+<label><input type="radio" name="q3" value="a"> Fictional men</label><br>
+<label><input type="radio" name="q3" value="b"> Real men</label><br>
+<label><input type="radio" name="q3" value="c"> No men</label>
+</div>
+
+<button type="button" onclick="submitQuiz()">Submit Quiz</button>
+</form>
+</div>
+
+<!-- FINAL PAGE -->
+<div id="final" class="section">
+<h1>🎉 You Did It, Suge 🎉</h1>
+<h2 id="finalResult"></h2>
+<p id="praiseMessage" style="font-size:18px; margin-top:20px;"></p>
+<button onclick="restartQuiz()">Play Again?</button>
+</div>
+
+<script>
+/* Start Quiz + Play Music */
+function startQuiz() {
+  document.getElementById("intro").classList.remove("active");
+  document.getElementById("quiz").classList.add("active");
+  document.getElementById("bgMusic").play();
+}
+
+/* Submit Quiz → Final Page */
+function submitQuiz() {
+  let score = 0;
+  let q1 = document.querySelector('input[name="q1"]:checked');
+  let q2 = document.querySelector('input[name="q2"]:checked');
+  let q3 = document.querySelector('input[name="q3"]:checked');
+
+  if(!q1 || !q2 || !q3){
+    alert("Answer all questions!");
+    return;
+  }
+
+  if(q1.value==="a") score++;
+  if(q2.value==="a","b","c") score++;
+  if(q3.value==="a") score++;
+
+  let resultText="";
+  if(score===3) resultText="👑 Main Character Syndrome UNLOCKED.";
+  else if(score===2) resultText="💖 Certified Delulu.";
+  else resultText="Need to know more about yourself🙂.";
+
+  // Praise message
+  let praise="You are amazing, full of dreams and unstoppable energy.keep manifesting, chasing your passions, and making the world brighter just by being you! And Don't forget to sharing reels ok keep our reel-ship forever ✨🌟";
+  
+  // Hide quiz, show final
+  document.getElementById("quiz").classList.remove("active");
+  document.getElementById("final").classList.add("active");
+  document.getElementById("finalResult").innerText = resultText;
+  document.getElementById("praiseMessage").innerText = praise;
+}
+
+/* Floating Hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,800);
+
+/* Restart Quiz */
+function restartQuiz() {
+  document.getElementById("final").classList.remove("active");
+  document.getElementById("intro").classList.add("active");
+  document.getElementById("quizForm").reset();
+}
+</script>
+
+</body>
+</html>
